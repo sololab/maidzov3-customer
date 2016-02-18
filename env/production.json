@@ -1,0 +1,14 @@
+{
+	"ENV": {
+		"name": "production",
+		"API_CONFIG": {
+			"url": "http://api.maidzo.xyz/"
+		},
+		"SITE_CONFIG": {
+			"url": "http://maidzo.xyz/"
+		},
+		"BOT_CONFIG": {
+			"url": "http://bot.maidzo.xyz/"
+		}
+	}
+}
