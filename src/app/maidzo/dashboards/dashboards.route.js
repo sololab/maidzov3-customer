@@ -10,7 +10,7 @@
 
     $stateProvider
     .state('maidzo.admin-default.dashboard-server', {
-      url: '/dashboards/server',
+      url: '/dashboards/servers',
       templateUrl: 'app/maidzo/dashboards/server/dashboard-server.tmpl.html',
       controller: 'DashboardServerController as vm',
       data: {
