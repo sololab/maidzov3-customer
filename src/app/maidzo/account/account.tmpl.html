@@ -1,0 +1,157 @@
+<div class="full-image-background mb-bg-01 padding-20 padding-top-100 overlay-gradient-30" layout="row" layout-align="start center">
+    <div class="margin-right-20">
+      <img gravatar-src="vm.account.email" gravatar-size="100" gravatar-default="mm" class="make-round">
+    </div>
+    <div class="text-light">
+      <h3 class="font-weight-600 margin-bottom-0 text-light">{{vm.account.name}}</h3>
+     </div>
+</div>
+
+<div layout="row" class="account" layout-wrap>
+  <div flex="100" flex-gt-md="100">
+
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="Tài khoản">
+        <md-content class="md-padding">
+          <form name="account" ng-submit="vm.updateAccount()">
+            <!-- Errors messages -->
+            <div layout="column" ng-if="vm.accountErrors">
+              <div class="mdc-bg-deep-orange-800" layout-padding>
+                <ul>
+                  <li ng-repeat="error in vm.accountErrors">
+                    <span style="color:#fff;">{{error[0]}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Name -->
+            <md-input-container class="md-block">
+              <label for="name">Họ và Tên</label>
+              <input id="name" label="name" name="name" type="text" ng-model="vm.account.name" required>
+              <div ng-messages="account.name.$error">
+                <div ng-message when="required">Vui lòng nhập họ và tên</div>
+              </div>
+            </md-input-container>
+            <!-- Email -->
+            <md-input-container class="md-block">
+              <label for="email">Email</label>
+              <input id="email" label="email" name="email" type="text" ng-model="vm.account.email" required>
+              <div ng-messages="account.email.$error">
+                <div ng-message when="required">Vui lòng nhập Email</div>
+              </div>
+            </md-input-container>
+            <!-- Password -->
+            <md-input-container class="md-block">
+              <label for="password">Mật khẩu</label>
+              <input id="password" label="password" name="password" type="password" ng-model="vm.account.password" required>
+              <div ng-messages="account.password.$error">
+                <div ng-message when="required">Vui lòng nhập Email</div>
+              </div>
+            </md-input-container>
+            <!-- Password confirmation -->
+            <md-input-container class="md-block">
+              <label for="password_confirmation">Xác nhận mật khẩu</label>
+              <input id="password_confirmation" label="password_confirmation" name="password_confirmation" type="password" ng-model="vm.account.password_confirmation" required>
+              <div ng-messages="account.password_confirmation.$error">
+                <div ng-message when="required">Vùi lòng nhập Email</div>
+              </div>
+            </md-input-container>
+            <!-- Submit button -->
+            <md-button type="submit" class="md-raised md-primary margin-left-0" ng-disabled="account.$invalid" aria-label="update">Cập nhật</md-button>
+          </form>
+        </md-content>
+      </md-tab>
+
+      <md-tab label="Hồ sơ">
+        <md-content class="md-padding">
+          <form name="profile" ng-submit="vm.updateProfile()">
+            <!-- Gender -->
+            <md-input-container class="md-block">
+              <label for="gender">Giới tính</label>
+              <md-select ng-model="vm.profile.gender">
+                <md-option value="male">
+                  Nam
+                </md-option>
+                <md-option value="female">
+                  Nữ
+                </md-option>
+                <md-option value="unknow">
+                  Không xác định
+                </md-option>
+              </md-select>
+              <div ng-messages="profile.gender.$error">
+                <div ng-message when="required">Vui lòng chọn giới tính</div>
+              </div>
+            </md-input-container>
+            <!-- Birth date -->
+            <div flex class="padding-bottom-30">
+              <label>Ngày sinh</label>
+              <md-datepicker ng-model="vm.birth_date" md-placeholder="Ngày sinh"></md-datepicker>
+            </div>
+            <!-- Submit button -->
+            <md-button type="submit" class="md-raised md-primary margin-left-0" ng-disabled="profile.$invalid" aria-label="update">Cập nhật</md-button>
+          </form>
+        </md-content>
+      </md-tab>
+
+      <md-tab label="Địa chỉ">
+        <md-content class="md-padding">
+          <form name="location" ng-submit="vm.updateLocation()">
+            <!-- Errors messages -->
+            <div layout="column" ng-if="vm.locationErrors">
+              <div class="mdc-bg-deep-orange-800" layout-padding>
+                <ul>
+                  <li ng-repeat="error in vm.locationErrors">
+                    <span style="color:#fff;">{{error[0]}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Address -->
+            <md-input-container class="md-block">
+              <label for="address">Số nhà</label>
+              <input id="address" label="address" name="address" type="text" ng-model="vm.location.address" required>
+              <div ng-messages="location.address.$error">
+                <div ng-message when="required">Vui lòng nhập địa chỉ</div>
+              </div>
+            </md-input-container>
+            <!-- Province -->
+            <md-input-container class="md-block">
+              <label>Tỉnh/Thành phố</label>
+                <md-select id="province" name="province" placeholder="{{vm.location.province.name}}" ng-model="vm.location.province" md-on-open="vm.loadProvinces()" required>
+                  <md-option ng-value="province" ng-repeat="province in vm.provinces" required>{{province.name}}</md-option>
+                </md-select>
+                <div ng-messages="location.province.$error">
+                  <div ng-message when="required">Vui lòng chọn Tỉnh/Thành phố</div>
+                </div>
+            </md-input-container>
+            <!-- District -->
+            <md-input-container class="md-block">
+              <label>Quận/Huyện</label>
+                <md-select id="district" name="district" placeholder="{{vm.location.district.name}}" ng-model="vm.location.district" md-on-open="vm.loadDistricts(vm.location.province.id)" required>
+                  <md-option ng-value="district" ng-repeat="district in vm.districts">{{district.name}}</md-option>
+                </md-select>
+                <div ng-messages="location.district.$error">
+                  <div ng-message when="required">Vui lòng chọn Quận/Huyện</div>
+                </div>
+            </md-input-container>
+            <!-- Ward -->
+            <md-input-container class="md-block">
+              <label>Xã/Phường/Thị trấn</label>
+                <md-select id="district" name="district" placeholder="{{vm.location.ward.name}}" ng-model="vm.location.ward" md-on-open="vm.loadWards(vm.location.district.id)" required>
+                  <md-option ng-value="ward" ng-repeat="ward in vm.wards">{{ward.name}}</md-option>
+                </md-select>
+                <div ng-messages="location.district.$error">
+                  <div ng-message when="required">Vui lòng chọn Xã/Phường/Thị trấn</div>
+                </div>
+            </md-input-container>
+
+            </md-input-container>
+            <md-button type="submit" class="md-raised md-primary margin-left-0" ng-disabled="location.$invalid" aria-label="update">Cập nhật</md-button>
+          </form>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </div>
+</div>

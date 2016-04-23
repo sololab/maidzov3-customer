@@ -5,7 +5,7 @@
     .module('app', [
       'triangular',
       'ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngMaterial',
-      'ui.router', 'pascalprecht.translate', 'LocalStorageModule', 'googlechart', 'chart.js', 'linkify', 'ui.calendar', 'angularMoment', 'textAngular', 'uiGmapgoogle-maps', 'hljs', 'md.data.table', angularDragula(angular), 'ngFileUpload', 'satellizer', 'angular-loading-bar', 'angular.filter',
+      'ui.router', 'pascalprecht.translate', 'LocalStorageModule', 'googlechart', 'chart.js', 'linkify', 'ui.calendar', 'angularMoment', 'textAngular', 'uiGmapgoogle-maps', 'hljs', 'md.data.table', angularDragula(angular), 'ngFileUpload', 'satellizer', 'angular-loading-bar', 'angular.filter', 'ui.gravatar',
       'app.maidzo'
     ])
     // create a constant for languages so they can be added to both triangular & translate
