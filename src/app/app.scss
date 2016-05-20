@@ -14,10 +14,37 @@ button, select, html, textarea, input {
 }
 
 // import app scss
-
 @import "scss/material-backgrounds";
 
-// Add your CSS here
+// Import font-awesome >=4.4.0
+$fa-font-path: "/bower_components/font-awesome/fonts/";
+@import "bower_components/font-awesome/scss/font-awesome.scss";
+
+// Custom css
+.md-table thead tr {
+  height: auto;
+}
+
+.md-table {
+  td {
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      box-sizing: content-box;
+      margin-top: 4px;
+    }
+  }
+}
+
+// Animate when show/hide search form below toolbar
+.animate-show.ng-hide-add {
+  @include zoomOut();
+}
+
+.animate-show.ng-hide-remove {
+  @include zoomIn();
+}
 
 /**
  *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject

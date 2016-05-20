@@ -1,0 +1,38 @@
+<md-content>
+  <md-toolbar class="md-warn">
+    <div class="md-toolbar-tools">
+      <h2 class="md-title" translate>Danh sách đơn hàng</h2>
+    </div>
+  </md-toolbar>
+
+  <md-content>
+    <md-table-container>
+      <table md-table ng-model="vm.selected" md-progress="vm.promise">
+        <thead md-head md-order="vm.query.orderBy" md-on-reorder="vm.onReorder">
+          <tr md-row>
+            <th md-column>Mã đơn</th>
+            <th md-column>{{'Ngày tiếp nhận' | translate}}</th>
+            <th md-column>{{'Ngày bắt đầu' | translate}}</th>
+            <th md-column>{{'Trạng thái' | translate}}</th>
+            <th md-column>{{'Thao tác' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat="order in vm.orders.data">
+            <td md-cell>{{order.id}}</td>
+            <td md-cell>{{order.created_at * 1000 | date:'dd/MM/yyyy'}}</td>
+            <td md-cell><span ng-if="order.started_at">{{order.started_at * 1000 | date:'dd/MM/yyyy'}}</span></td>
+            <td md-cell>{{order.status.name}}</td>
+            <td md-cell>
+              <md-button ui-sref="maidzo.admin-default.shop.orders.detail({id: order.id})" class="md-icon-button md-mini md-accent" aria-label="Open Order">
+                <md-icon>zoom_in</md-icon>
+              </md-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+
+    <md-table-pagination md-limit="vm.query.limit" md-page="vm.query.page" md-total="{{vm.orders.meta.pagination.total}}" md-on-paginate="vm.onPaginate" md-page-select></md-data-table-pagination>
+  </md-content>
+</md-content>

@@ -7,6 +7,7 @@
       'app.maidzo.location',
       'app.maidzo.auth',
       'app.maidzo.dashboards',
-      'app.maidzo.account'
+      'app.maidzo.account',
+      'app.maidzo.shop'
     ]);
 })();

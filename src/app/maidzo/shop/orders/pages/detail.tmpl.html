@@ -1,0 +1,417 @@
+<md-content>
+  <md-tabs md-dynamic-height>
+    <md-tab label="Thông tin">
+      <div class="overlay-10">
+        <!-- order note -->
+        <div layout="column" layout-sm="column" layout-md="column" ng-show="vm.order.data.note">
+          <md-card flex class="md-warn">
+            <md-card-content>
+              <p class="mdc-text-red">{{vm.order.data.note}}</p>
+            </md-card-content>
+          </md-card>
+        </div>
+        <div layout="row" layout-sm="column" layout-md="column">
+          <!-- Order information -->
+          <md-card flex>
+            <md-card-content>
+              <md-list>
+                <md-list-item>
+                  <p>Mã đơn</p>
+                  <p class="md-secondary">#{{vm.order.data.id}}</p>
+                </md-list-item>
+                <md-list-item>
+                  <p>Ngày tạo</p>
+                  <p class="md-secondary">{{vm.order.data.created_at * 1000 | date:'dd/MM/yyyy'}}</p>
+                </md-list-item>
+                <md-list-item>
+                  <p>Trạng thái</p>
+                  {{vm.order.data.status.name}}
+                </md-list-item>
+              </md-list>
+            </md-card-content>
+          </md-card>
+          <!-- Order address -->
+          <md-card flex>
+            <md-card-content>
+              <md-list>
+                <md-list-item>
+                  {{vm.order.address.name}}
+                </md-list-item>
+                <md-list-item>
+                  {{vm.order.address.phone}}
+                </md-list-item>
+                <md-list-item>
+                  {{vm.order.address.address}}, {{vm.order.address.ward.name}}, {{vm.order.address.district.name}}, {{vm.order.address.province.name}}
+                </md-list-item>
+              </md-list>
+            </md-card-content>
+          </md-card>
+        </div>
+        <div layout="row" layout-sm="column" layout-md="column">
+          <!-- order price -->
+          <md-card flex>
+            <md-card-content>
+              <md-list>
+                <!-- Subtotal -->
+                <md-list-item>
+                  <p>Tổng giá sản phẩm</p>
+                  <p class="md-secondary">
+                    {{vm.order.data.price.subtotal | currency:'cny'}}
+                    <span class="mdc-text-light-blue">({{vm.order.data.price.subtotal | exchange:vm.order.data.exchange_rate}})</span>
+                  </p>
+                </md-list-item>
+
+                <!-- Shipping fee -->
+                <md-list-item>
+                  <p>Tổng ship nội địa</p>
+                  <p class="md-secondary">
+                    {{vm.order.data.price.shipping | currency:'cny'}}
+                    <span class="mdc-text-light-blue">({{vm.order.data.price.shipping | exchange:vm.order.data.exchange_rate}})</span>
+                  </p>
+                </md-list-item>
+
+                <!-- Service charge -->
+                <md-list-item>
+                  <p>Tổng phí dịch vụ</p>
+                  <p class="md-secondary">
+                    {{vm.order.data.price.service.regular.amount - vm.order.data.price.service.discount.amount | currency:'cny'}}
+                    <span class="mdc-text-light-blue">({{vm.order.data.price.service.regular.amount - vm.order.data.price.service.discount.amount | exchange:vm.order.data.exchange_rate}})</span>
+                  </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <!-- Grand total -->
+                <md-list-item>
+                  <p>Tổng đơn hàng</p>
+                  <p class="md-secondary">
+                    {{vm.order.data.price.subtotal + (vm.order.data.price.service.regular.amount - vm.order.data.price.service.discount.amount) + vm.order.data.price.shipping | currency:'cny'}}
+                    <span class="mdc-text-light-blue">({{vm.order.data.price.subtotal + (vm.order.data.price.service.regular.amount - vm.order.data.price.service.discount.amount) + vm.order.data.price.shipping | exchange:vm.order.data.exchange_rate}})</span>
+                  </p>
+                </md-list-item>
+              </md-list>
+            </md-card-content>
+          </md-card>
+          <!-- order payment -->
+          <md-card flex>
+            <md-card-content>
+              <md-list>
+                <!-- Total shipments -->
+                <md-list-item>
+                  <p>Tổng số kiện hàng</p>
+                  <p class="md-secondary">
+                    {{vm.order.shipments.length}}
+                  </p>
+                </md-list-item>
+
+                <!-- Total weight -->
+                <md-list-item>
+                  <p>Tổng trọng lượng (kg)</p>
+                  <p class="md-secondary">
+                    {{vm.order.data.weight}}
+                    <span class="mdc-text-light-blue">({{vm.order.data.weight * vm.order.data.weight_rate | currency:'vnd'}})</span>
+                  </p>
+                </md-list-item>
+
+                <!-- Total dimension -->
+                <md-list-item>
+                  <p>Tổng khối lượng (m3)</p>
+                  <span class="md-secondary">
+                    {{vm.order.data.dimension}}
+                    <span class="mdc-text-light-blue">({{vm.order.data.dimension * vm.order.data.dimension_rate | currency:'vnd'}})</span>
+                  </span>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <!-- Total price -->
+                <md-list-item>
+                  <p>Tổng tiền</p>
+                  <span class="md-secondary">
+                    {{(vm.order.data.weight * vm.order.data.weight_rate) + (vm.order.data.dimension * vm.order.data.dimension_rate) | currency:'vnd'}}
+                  </span>
+                </md-list-item>
+              </md-list>
+            </md-card-content>
+          </md-card>
+        </div>
+      </div>
+    </md-tab>
+
+    <md-tab label="Sản phẩm">
+      <div class="overlay-10" style="min-height:500px;">
+        <div layout="column">
+          <md-card flex ng-repeat="(shop, items) in vm.shops">
+            <md-card-content>
+              <h2 class="md-title" ng-bind-html="shop"></h2>
+            </md-card-content>
+
+            <md-table-container>
+              <table md-table md-row-select ng-model="vm.selected[shop]">
+                <thead md-head>
+                  <tr md-row>
+                    <th md-column>ID</th>
+                    <th md-column>Thông tin</th>
+                    <th md-column>Số lượng</th>
+                    <th md-column>Giá</th>
+                    <th md-column>Ship</th>
+                    <th md-column>Tổng</th>
+                    <th md-column>Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody md-body>
+                  <tr md-row md-select="item" md-select-id="{{item.id}}" ng-repeat="item in items | orderBy:'id'">
+                    <!-- id -->
+                    <td md-cell>{{item.id}}</td>
+                    <!-- information -->
+                    <td md-cell style="width:250px;">
+                      <md-list>
+                        <md-list-item class="md-2-line padding-0">
+                          <img ng-src="{{item.product.data.image}}" class="md-avatar">
+                          <div class="md-list-item-text" hide show-lg>
+                            <!-- name -->
+                            <a href="javascript:void(0);" ng-click="vm.itemEdit(item)">
+                              {{item.title | limitTo:10}}{{item.title.length > 10 ? '...' : ''}}
+                              <md-tooltip md-direction="bottom">
+                                {{item.title}}
+                              </md-tooltip>
+                            </a>
+
+                            <!-- variant -->
+                            <p>
+                              <span class="md-caption">{{item.variant}}</span>
+                              <md-tooltip md-direction="bottom">
+                                {{item.variant}}
+                              </md-tooltip>
+                            </p>
+
+                            <!-- comment -->
+                            <p ng-if="item.comment">
+                              {{item.comment | limitTo:20}}{{item.comment.length > 20 ? '...' : ''}}
+                              <md-tooltip md-direction="bottom">
+                                {{item.comment}}
+                              </md-tooltip>
+                            </p>
+                            <ul>
+                              <li style="display:inline;">
+                                <i class="zmdi zmdi-shield-check" ng-class="{'mdc-text-green': item.insurance, 'mdc-text-grey-300': !item.insurance}"></i>
+                                <md-tooltip md-direction="bottom">
+                                  Bảo hiểm
+                                </md-tooltip>
+                              </li>
+                              <li style="display:inline;">
+                                <i class="zmdi zmdi-broken-image" ng-class="{'mdc-text-blue': item.fragile, 'mdc-text-grey-300': !item.fragile}"></i>
+                                <md-tooltip md-direction="bottom">
+                                  Dễ vỡ
+                                </md-tooltip>
+                              </li>
+                            </ul>
+                          </div>
+                        </md-list-item>
+                      </md-list>
+                    </td>
+                    <!-- quantity -->
+                    <td md-cell>
+                      <span>
+                        {{item.order_quantity | number}}/{{item.quantity_arrived_local | number}}
+                        <md-tooltip md-direction="bottom">
+                          Đặt: {{item.order_quantity | number}} Về: {{item.quantity_arrived_local | number}}
+                        </md-tooltip>
+                      </span>
+                    </td>
+                    <td md-cell>{{item.order_price | currency:vm.order.data.currency}}</td>
+                    <td md-cell>{{item.order_shipping | currency:vm.order.data.currency}}</td>
+                    <td md-cell>{{(item.order_price * item.order_quantity) + item.order_shipping | currency:vm.order.data.currency}}</td>
+                    <td mg-cell style="width:200px;max-width:200px;">
+                      {{item.status.name}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+          </md-card>
+        </div> 
+      </div>
+    </md-tab>
+
+    <md-tab label="Kiện hàng">
+      <div class="overlay-10">
+        <div layout="column">
+          <md-card flex style="min-height:500px;">
+            <md-table-container>
+              <table md-table>
+                <thead md-head>
+                  <tr md-row>
+                    <th md-column>ID</th>
+                    <th md-column>Trọng lượng (kg)</th>
+                    <th md-column>Khối lượng (m3)</th>
+                    <th md-column>Cần thanh toán</th>
+                    <th md-column>Đã thanh toán</th>
+                    <th md-column>Trạng thái</th>
+                    <th md-column>Thao tác</th>
+                  </tr>
+                </thead>
+
+                <tbody md-body>
+                  <tr md-row ng-repeat="shipment in vm.order.shipments">
+                    <td md-cell>{{shipment.id}}</td>
+                    <td md-cell>
+                      <md-list>
+                        <md-list-item class="md-2-line padding-0">
+                          <div class="md-list-item-text" hide show-lg>
+                            <p>
+                              <span class="md-caption">{{shipment.weight.total}} x {{shipment.weight.rate | currency:vm.order.data.currency}}</span>
+                            </p>
+                            <p>
+                              <span class="md-caption">Tổng: {{shipment.weight.price | currency:vm.order.data.currency}}</span>
+                            </p>
+                          </div>
+                        </md-list-item>
+                      </md-list>
+                    </td>
+                    <td md-cell>
+                      <md-list>
+                        <md-list-item class="md-2-line padding-0">
+                          <div class="md-list-item-text" hide show-lg>
+                            <p>
+                              <span class="md-caption">{{shipment.dimension.total}} x {{shipment.dimension.rate | currency:vm.order.data.currency}}</span>
+                            </p>
+                            <p>
+                              <span class="md-caption">Tổng: {{shipment.dimension.price | currency:vm.order.data.currency}}</span>
+                            </p>
+                          </div>
+                        </md-list-item>
+                      </md-list>
+                    </td>
+                    <td md-cell>{{shipment.finance.price | currency:vm.order.data.currency}}</td>
+                    <td md-cell>{{shipment.finance.paid | currency:vm.order.data.currency}}</td>
+                    <td mg-cell style="width:200px;max-width:200px;">
+                      <md-select placeholder="Chọn trạng thái" ng-model="shipment.status.id" ng-change="vm.updateShipmentStatus(shipment.order_id, shipment.id, shipment.status)" aria-label="shipment status">
+                        <md-option ng-value="id" ng-repeat="(id, name) in vm.shipmentStatuses">{{name}}</md-option>
+                      </md-select>
+                    </td>
+                    <td md-cell>
+                      <md-menu>
+                        <md-button ng-click="$mdOpenMenu()" class="md-icon-button md-mini md-accent" aria-label="Chỉnh sửa">
+                          <md-icon md-menu-origin>menu</md-icon>
+                        </md-button>
+
+                        <md-menu-content width="4">
+                          <md-menu-item>
+                            <md-button ng-click="vm.shipmentEdit(shipment)" aria-label="Chỉnh sửa">
+                              <md-icon>edit</md-icon>
+                              Chỉnh sửa
+                            </md-button>
+                          </md-menu-item>
+
+                          <md-menu-item>
+                            <md-button ng-click="vm.shipmentInvoiceCreate(shipment)" aria-label="Chỉnh sửa">
+                              <md-icon>add</md-icon>
+                              Thêm hóa đơn
+                            </md-button>
+                          </md-menu-item>
+                        </md-menu-content>
+                      </md-menu>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+          </md-card>
+        </div>
+      </div>
+    </md-tab>
+
+    <md-tab label="Hóa đơn">
+      <div class="overlay-10">
+        <div layout="column">
+          <md-card flex style="min-height:500px;">
+            <md-table-container>
+              <table md-table>
+                <thead md-head>
+                  <tr md-row>
+                    <th md-column>ID</th>
+                    <th md-column>Số tiền</th>
+                    <th md-column>Đã thanh toán</th>
+                    <th md-column>Ngày tạo</th>
+                    <th md-column>Thao tác</th>
+                  </tr>
+                </thead>
+
+                <tbody md-body>
+                  <tr md-row ng-repeat="invoice in vm.order.invoices">
+                    <td md-cell>{{invoice.id}}</td>
+                    <td md-cell>{{invoice.price.amount | currency:'vnd'}}</td>
+                    <td md-cell>{{invoice.paid | currency:'vnd'}}</td>
+                    <td md-cell>{{invoice.created_at * 1000 | date:'dd/MM/yyyy'}}</td>
+                    <td md-cell>
+                      <md-menu>
+                        <md-button ng-click="$mdOpenMenu()" class="md-icon-button md-mini md-accent" aria-label="Chỉnh sửa">
+                          <md-icon md-menu-origin>menu</md-icon>
+                        </md-button>
+
+                        <md-menu-content width="4">
+                          <md-menu-item>
+                            <md-button ng-click="vm.invoiceEdit(invoice)" aria-label="Chỉnh sửa">
+                              <md-icon>edit</md-icon>
+                              Chỉnh sửa
+                            </md-button>
+                          </md-menu-item>
+
+                          <md-menu-item>
+                            <md-button ng-click="vm.paymentCreate(invoice)" aria-label="Thêm thanh toán">
+                              <md-icon>add</md-icon>
+                              Thêm thanh toán
+                            </md-button>
+                          </md-menu-item>
+                        </md-menu-content>
+                      </md-menu>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+          </md-card>
+        </div>
+      </div>
+    </md-tab>
+
+    <md-tab label="Thanh toán">
+      <div class="overlay-10">
+        <div layout="column">
+          <md-card flex style="min-height:500px;">
+            <md-table-container>
+              <table md-table>
+                <thead md-head>
+                  <tr md-row>
+                    <th md-column>ID</th>
+                    <th md-column>Mã hóa đơn</th>
+                    <th md-column>Số tiền</th>
+                    <th md-column>Trạng thái</th>
+                    <th md-column>Ghi chú</th>
+                    <th md-column>Ngày tạo</th>
+                    <th md-column>Thao tác</th>
+                  </tr>
+                </thead>
+
+                <tbody md-body>
+                  <tr md-row ng-repeat="payment in vm.order.payments">
+                    <td md-cell>
+                      <a href="javascript:void(0);" ng-click="vm.paymentEdit(payment)">{{payment.id}}</a>
+                    </td>
+                    <td md-cell>{{payment.invoice_id}}</td>
+                    <td md-cell>{{payment.amount | currency:'vnd'}}</td>
+                    <td md-cell>{{payment.status.name}}</td>
+                    <td md-cell>{{payment.note}}</td>
+                    <td md-cell>{{payment.created_at * 1000 | date:'dd/MM/yyyy'}}</td>
+                    <td md-cell></td>
+                  </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+          </md-card>
+        </div>
+      </div>
+    </md-tab>
+  </md-tabs>
+</md-content>

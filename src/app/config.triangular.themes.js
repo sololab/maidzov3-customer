@@ -193,7 +193,9 @@
     .primaryPalette('light-green' , {
       'default': '700'
     })
-    .accentPalette('amber')
+    .accentPalette('deep-orange', {
+      'default': '500'
+    })
     .warnPalette('deep-orange');
 
     triThemingProvider.theme('white-light-green')

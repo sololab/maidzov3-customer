@@ -4,7 +4,7 @@
   angular
     .module('app', [
       'triangular',
-      'ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngMaterial',
+      'ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngMaterial', 'ngResource',
       'ui.router', 'pascalprecht.translate', 'LocalStorageModule', 'googlechart', 'chart.js', 'linkify', 'ui.calendar', 'angularMoment', 'textAngular', 'uiGmapgoogle-maps', 'hljs', 'md.data.table', angularDragula(angular), 'ngFileUpload', 'satellizer', 'angular-loading-bar', 'angular.filter', 'ui.gravatar',
       'app.maidzo'
     ])
